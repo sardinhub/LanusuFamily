@@ -8,6 +8,7 @@ import {
   insertAnggota,
   updateAnggota as dbUpdateAnggota,
   deleteAnggota as dbDeleteAnggota,
+  insertKepalaKeluarga,
   updateStatusTransaksi,
   insertTransaksi,
 } from "../lib/db";
@@ -169,6 +170,27 @@ export function AppProvider({ children }) {
     }
   };
 
+  // ── CRUD Kepala Keluarga ──
+  const addKepalaKeluarga = async (kkData) => {
+    try {
+      const slug = kkData.nama_kk.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+      const newId = `kk-${slug}-${Date.now()}`;
+      
+      const payload = {
+        ...kkData,
+        id: newId,
+        tagihan_bulanan: kkData.jumlah_anggota * 10000,
+        anggota_id: null,
+      };
+      
+      await insertKepalaKeluarga(payload);
+      notify("success", `Kepala Keluarga "${kkData.nama_kk}" berhasil didaftarkan.`);
+      await loadData();
+    } catch (err) {
+      notify("error", `Gagal menambah Kepala Keluarga: ${err.message}`);
+    }
+  };
+
   // ── Transaksi ──
   const konfirmasiTransaksi = async (txId, status, extra = {}) => {
     try {
@@ -205,6 +227,7 @@ export function AppProvider({ children }) {
         addAnggota,
         updateAnggota,
         deleteAnggota,
+        addKepalaKeluarga,
         konfirmasiTransaksi,
         submitBuktiTransaksi,
         refreshData: loadData,

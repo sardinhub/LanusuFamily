@@ -105,6 +105,17 @@ export async function fetchKepalaKeluarga() {
   return data || [];
 }
 
+/** Tambah KK baru */
+export async function insertKepalaKeluarga(kkData) {
+  const { data, error } = await supabase
+    .from("kepala_keluarga")
+    .insert(kkData)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 // ─────────────────────────────────────────
 // TRANSAKSI
 // ─────────────────────────────────────────

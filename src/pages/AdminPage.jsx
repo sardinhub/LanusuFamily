@@ -337,7 +337,7 @@ function AnggotaList({ anggotaList, onEdit, onDelete }) {
 // Halaman Utama Admin
 // ────────────────────────────────────────────────
 export default function AdminPage() {
-  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, updateAnggota, deleteAnggota, konfirmasiTransaksi } = useApp();
+  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, updateAnggota, deleteAnggota, addKepalaKeluarga, konfirmasiTransaksi } = useApp();
   const [activeTab, setActiveTab] = useState("verifikasi");
   const [editAnggotaItem, setEditAnggotaItem] = useState(null);
   const [newKK, setNewKK] = useState({
@@ -390,8 +390,9 @@ export default function AdminPage() {
       notify("error", "Nama Kepala Keluarga dan pasangan wajib diisi.");
       return;
     }
-    notify("info", `Fitur tambah KK (simpan ke Supabase) belum diimplementasi secara penuh di contoh ini.`);
-    // setNewKK({ nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: "" });
+    
+    addKepalaKeluarga(newKK);
+    setNewKK({ nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: "" });
   };
 
   const handleAddAnggota = (parentId, anggota, pasangan, nama) => {

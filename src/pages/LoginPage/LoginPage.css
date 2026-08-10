@@ -9,8 +9,9 @@
   justify-content: center;
   background: var(--bg-primary);
   position: relative;
-  overflow: hidden;
-  padding: var(--spacing-md);
+  overflow-x: hidden;  /* hanya sembunyikan horizontal, bukan vertikal */
+  overflow-y: auto;
+  padding: var(--spacing-xl) var(--spacing-md);
 }
 
 /* ── Background animated orbs ── */
@@ -70,6 +71,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
 }
 
 /* ── Brand ── */

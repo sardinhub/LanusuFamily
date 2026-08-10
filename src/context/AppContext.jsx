@@ -134,13 +134,21 @@ export function AppProvider({ children }) {
     try {
       const slug = anggotaData.nama.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
       const newId = `anggota-${slug}-${Date.now()}`;
-      const pasId = pasanganData
-        ? `pasangan-${slug}-${Date.now()}`
-        : null;
+      let finalPasanganData = null;
+      if (pasanganData) {
+        if (Array.isArray(pasanganData)) {
+          finalPasanganData = pasanganData.map((p, i) => ({
+            ...p,
+            id: `pasangan-${slug}-${Date.now()}-${i}`
+          }));
+        } else {
+          finalPasanganData = { ...pasanganData, id: `pasangan-${slug}-${Date.now()}` };
+        }
+      }
 
       await insertAnggota(
         { ...anggotaData, id: newId, parent_id: parentId },
-        pasanganData ? { ...pasanganData, id: pasId } : null
+        finalPasanganData
       );
       notify("success", `Anggota "${anggotaData.nama}" berhasil ditambahkan.`);
       await loadData(); // Refresh seluruh tree

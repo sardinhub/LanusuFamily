@@ -22,9 +22,9 @@ const EMPTY_ANGGOTA = {
   cabang: "indo-jani",
   keterangan: "",
   sudah_menikah: false,
-  nama_pasangan: "",
-  jenis_kelamin_pasangan: "P",
-  lahir_pasangan: "",
+  pasangan_list: [
+    { nama_pasangan: "", lahir_pasangan: "" }
+  ]
 };
 
 // ────────────────────────────────────────────────
@@ -50,7 +50,13 @@ function SilsilahForm({ anggotaList, onSubmit }) {
     if (!form.nama.trim()) errs.nama = "Nama wajib diisi";
     if (!form.parent_id) errs.parent_id = "Pilih orang tua";
     if (!form.lahir.trim()) errs.lahir = "Tahun lahir wajib diisi";
-    if (form.sudah_menikah && !form.nama_pasangan.trim()) errs.nama_pasangan = "Nama pasangan wajib diisi";
+    if (form.sudah_menikah) {
+      form.pasangan_list.forEach((p, index) => {
+        if (!p.nama_pasangan.trim()) {
+          errs[`nama_pasangan_${index}`] = "Nama pasangan wajib diisi";
+        }
+      });
+    }
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -60,15 +66,15 @@ function SilsilahForm({ anggotaList, onSubmit }) {
     if (!validate()) return;
 
     const pasangan = form.sudah_menikah
-      ? {
-          nama: form.nama_pasangan,
-          gelar: form.jenis_kelamin === "L" ? "Istri" : "Suami",
-          jenis_kelamin: form.jenis_kelamin_pasangan,
-          lahir: form.lahir_pasangan || null,
+      ? form.pasangan_list.map((p, index) => ({
+          nama: p.nama_pasangan,
+          gelar: form.jenis_kelamin === "L" ? (form.pasangan_list.length > 1 ? `Istri ${index + 1}` : "Istri") : (form.pasangan_list.length > 1 ? `Suami ${index + 1}` : "Suami"),
+          jenis_kelamin: form.jenis_kelamin === "L" ? "P" : "L",
+          lahir: p.lahir_pasangan || null,
           meninggal: null,
           foto: null,
           cabang: form.cabang,
-        }
+        }))
       : null;
 
     const newAnggota = {
@@ -150,14 +156,14 @@ function SilsilahForm({ anggotaList, onSubmit }) {
               <button
                 type="button"
                 className={`gender-btn ${form.jenis_kelamin === "L" ? "active" : ""}`}
-                onClick={() => setForm({ ...form, jenis_kelamin: "L", jenis_kelamin_pasangan: "P" })}
+                onClick={() => setForm({ ...form, jenis_kelamin: "L" })}
               >
                 👨 Laki-laki
               </button>
               <button
                 type="button"
                 className={`gender-btn ${form.jenis_kelamin === "P" ? "active" : ""}`}
-                onClick={() => setForm({ ...form, jenis_kelamin: "P", jenis_kelamin_pasangan: "L" })}
+                onClick={() => setForm({ ...form, jenis_kelamin: "P" })}
               >
                 👩 Perempuan
               </button>
@@ -232,30 +238,62 @@ function SilsilahForm({ anggotaList, onSubmit }) {
 
         {form.sudah_menikah && (
           <div className="pasangan-fields">
-            <div className="form-row">
-              <div className="form-field">
-                <label>Nama Pasangan *</label>
-                <input
-                  type="text"
-                  className={`form-input ${errors.nama_pasangan ? "input-error" : ""}`}
-                  placeholder={form.jenis_kelamin === "L" ? "Nama istri" : "Nama suami"}
-                  value={form.nama_pasangan}
-                  onChange={(e) => setForm({ ...form, nama_pasangan: e.target.value })}
-                />
-                {errors.nama_pasangan && <span className="error-msg">{errors.nama_pasangan}</span>}
+            {form.pasangan_list.map((p, index) => (
+              <div key={index} style={{ marginBottom: "12px", padding: "12px", border: "1px solid #333", borderRadius: "8px" }}>
+                <h5 style={{ marginTop: 0, marginBottom: "8px", fontSize: "0.85rem", color: "#ccc" }}>
+                  Pasangan ke-{index + 1}
+                  {index > 0 && (
+                    <button type="button" onClick={() => {
+                      const newList = [...form.pasangan_list];
+                      newList.splice(index, 1);
+                      setForm({ ...form, pasangan_list: newList });
+                    }} style={{ marginLeft: "8px", background: "none", border: "none", color: "#ff4d4f", cursor: "pointer", fontSize: "0.8rem" }}>
+                      Hapus
+                    </button>
+                  )}
+                </h5>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>Nama Pasangan *</label>
+                    <input
+                      type="text"
+                      className={`form-input ${errors[`nama_pasangan_${index}`] ? "input-error" : ""}`}
+                      placeholder={form.jenis_kelamin === "L" ? "Nama istri" : "Nama suami"}
+                      value={p.nama_pasangan}
+                      onChange={(e) => {
+                        const newList = [...form.pasangan_list];
+                        newList[index].nama_pasangan = e.target.value;
+                        setForm({ ...form, pasangan_list: newList });
+                      }}
+                    />
+                    {errors[`nama_pasangan_${index}`] && <span className="error-msg">{errors[`nama_pasangan_${index}`]}</span>}
+                  </div>
+                  <div className="form-field">
+                    <label>Tahun Lahir Pasangan</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="cth: 1992"
+                      value={p.lahir_pasangan}
+                      onChange={(e) => {
+                        const newList = [...form.pasangan_list];
+                        newList[index].lahir_pasangan = e.target.value;
+                        setForm({ ...form, pasangan_list: newList });
+                      }}
+                      maxLength={4}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="form-field">
-                <label>Tahun Lahir Pasangan</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="cth: 1992"
-                  value={form.lahir_pasangan}
-                  onChange={(e) => setForm({ ...form, lahir_pasangan: e.target.value })}
-                  maxLength={4}
-                />
-              </div>
-            </div>
+            ))}
+            <button
+              type="button"
+              className="btn btn-outline"
+              style={{ width: "100%", fontSize: "0.85rem", marginTop: "8px" }}
+              onClick={() => setForm({ ...form, pasangan_list: [...form.pasangan_list, { nama_pasangan: "", lahir_pasangan: "" }] })}
+            >
+              ➕ Tambah Pasangan Lainnya
+            </button>
           </div>
         )}
       </div>

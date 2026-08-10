@@ -166,10 +166,12 @@ export async function insertAnggota(anggotaData, pasanganData = null) {
   if (error) throw error;
 
   if (pasanganData) {
-    const { error: pe } = await supabase
-      .from("pasangan")
-      .insert({ ...pasanganData, anggota_id: data.id });
-    if (pe) throw pe;
+    const pArray = Array.isArray(pasanganData) ? pasanganData : [pasanganData];
+    if (pArray.length > 0) {
+      const payload = pArray.map(p => ({ ...p, anggota_id: data.id }));
+      const { error: pe } = await supabase.from("pasangan").insert(payload);
+      if (pe) throw pe;
+    }
   }
 
   return data;

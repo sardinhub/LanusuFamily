@@ -449,6 +449,13 @@ export default function AdminPage() {
   const [newKK, setNewKK] = useState({
     selected_id: "", nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: ""
   });
+  const [newPembayaran, setNewPembayaran] = useState({
+    kk_id: "",
+    bulan_iuran: "2025-08",
+    nominal_bayar: 0,
+    tgl_bayar: new Date().toISOString().slice(0, 10),
+    keterangan: ""
+  });
 
   // Flatten silsilah untuk dropdown orang tua — re-compute saat tree berubah
   const anggotaList = useMemo(() => flattenTree(silsilah), [silsilah]);
@@ -543,6 +550,26 @@ export default function AdminPage() {
     setNewKK({ selected_id: "", nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: "" });
   };
 
+  const handleCatatPembayaran = (e) => {
+    e.preventDefault();
+    if (!newPembayaran.kk_id) {
+      notify("error", "Pilih Kepala Keluarga terlebih dahulu.");
+      return;
+    }
+    const txData = {
+      id: `tx-${Date.now()}`,
+      kk_id: newPembayaran.kk_id,
+      bulan_iuran: newPembayaran.bulan_iuran,
+      nominal_bayar: newPembayaran.nominal_bayar,
+      tgl_bayar: newPembayaran.tgl_bayar,
+      keterangan: newPembayaran.keterangan || "Pembayaran langsung via Admin",
+      status: "lunas"
+    };
+    // Ensure the catatPembayaranAdmin exists in AppContext
+    catatPembayaranAdmin(txData);
+    setNewPembayaran({ ...newPembayaran, kk_id: "", nominal_bayar: 0, keterangan: "" });
+  };
+
   const handleAddAnggota = (parentId, anggota, pasangan, nama) => {
     addAnggota(parentId, anggota, pasangan);
   };
@@ -607,6 +634,7 @@ export default function AdminPage() {
         <div className="admin-tabs">
           {[
             { key: "verifikasi", label: "✅ Verifikasi Setoran", count: pendingList.length },
+            { key: "pembayaran", label: "💰 Input Pembayaran", count: null },
             { key: "silsilah", label: "🌳 Kelola Silsilah", count: null },
             { key: "kk", label: "🏠 Tambah KK Baru", count: null },
             { key: "rekap", label: "📊 Rekap Lengkap", count: null },
@@ -683,6 +711,79 @@ export default function AdminPage() {
                 })}
               </div>
             )}
+          </div>
+        {/* Tab: Input Pembayaran */}
+        {activeTab === "pembayaran" && (
+          <div className="tab-content">
+            <div className="glass-card add-kk-form">
+              <h3 style={{ marginBottom: 20 }}>💰 Input Pembayaran Kas (Admin)</h3>
+              <p style={{ marginBottom: 20, fontSize: 13, color: "var(--text-muted)" }}>
+                Gunakan formulir ini untuk mencatat pembayaran iuran secara langsung (misal: pembayaran tunai ke bendahara). 
+                Status akan langsung tercatat sebagai <strong>Lunas</strong>.
+              </p>
+              <form onSubmit={handleCatatPembayaran} className="kk-form">
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>Nama Kepala Keluarga *</label>
+                    <select
+                      className="form-input full-width"
+                      value={newPembayaran.kk_id}
+                      onChange={(e) => {
+                        const selectedKK = kepalaKeluarga.find(k => k.id === e.target.value);
+                        setNewPembayaran({ 
+                          ...newPembayaran, 
+                          kk_id: e.target.value,
+                          nominal_bayar: selectedKK ? selectedKK.tagihan_bulanan : 0
+                        });
+                      }}
+                    >
+                      <option value="">-- Pilih Kepala Keluarga --</option>
+                      {kepalaKeluarga.map(kk => (
+                        <option key={kk.id} value={kk.id}>{kk.nama_kk}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-field">
+                    <label>Bulan Iuran *</label>
+                    <select
+                      className="form-input full-width"
+                      value={newPembayaran.bulan_iuran}
+                      onChange={(e) => setNewPembayaran({ ...newPembayaran, bulan_iuran: e.target.value })}
+                    >
+                      {BULAN_LIST.map(b => (
+                        <option key={b} value={b}>{BULAN_LABELS[b]}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-field">
+                    <label>Nominal Pembayaran (Rp) *</label>
+                    <input type="number" className="form-input" min="0" step="10000"
+                      value={newPembayaran.nominal_bayar} 
+                      onChange={(e) => setNewPembayaran({ ...newPembayaran, nominal_bayar: parseInt(e.target.value) || 0 })} 
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Tanggal Pembayaran *</label>
+                    <input type="date" className="form-input"
+                      value={newPembayaran.tgl_bayar} 
+                      onChange={(e) => setNewPembayaran({ ...newPembayaran, tgl_bayar: e.target.value })} 
+                    />
+                  </div>
+                </div>
+                <div className="form-field" style={{ marginBottom: 16 }}>
+                  <label>Keterangan</label>
+                  <input type="text" className="form-input full-width" placeholder="Contoh: Titip tunai saat arisan bulan Agustus"
+                    value={newPembayaran.keterangan} 
+                    onChange={(e) => setNewPembayaran({ ...newPembayaran, keterangan: e.target.value })} 
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                  <span>💾</span> Simpan Pembayaran
+                </button>
+              </form>
+            </div>
           </div>
         )}
 

@@ -220,6 +220,16 @@ export function AppProvider({ children }) {
     }
   };
 
+  const catatPembayaranAdmin = async (txData) => {
+    try {
+      const newTx = await insertTransaksi(txData);
+      dispatch({ type: "ADD_TRANSAKSI", payload: newTx });
+      notify("success", "Pembayaran iuran berhasil dicatat sebagai Lunas.");
+    } catch (err) {
+      notify("error", `Gagal mencatat pembayaran: ${err.message}`);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -238,6 +248,7 @@ export function AppProvider({ children }) {
         addKepalaKeluarga,
         konfirmasiTransaksi,
         submitBuktiTransaksi,
+        catatPembayaranAdmin,
         refreshData: loadData,
       }}
     >

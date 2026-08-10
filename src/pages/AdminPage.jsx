@@ -254,7 +254,7 @@ function SilsilahForm({ anggotaList, onSubmit }) {
 // ────────────────────────────────────────────────
 // Sub-komponen: Daftar Anggota Silsilah (tabel)
 // ────────────────────────────────────────────────
-function AnggotaList({ anggotaList, onDelete }) {
+function AnggotaList({ anggotaList, onEdit, onDelete }) {
   const [search, setSearch] = useState("");
   const filtered = anggotaList.filter((a) =>
     a.nama.toLowerCase().includes(search.toLowerCase())
@@ -299,13 +299,22 @@ function AnggotaList({ anggotaList, onDelete }) {
                   {a.id === "la-nusu" ? (
                     <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Root</span>
                   ) : (
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => onDelete(a.id, a.nama)}
-                      title={`Hapus ${a.nama} beserta seluruh cabangnya`}
-                    >
-                      🗑
-                    </button>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => onEdit(a)}
+                        title={`Edit ${a.nama}`}
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => onDelete(a.id, a.nama)}
+                        title={`Hapus ${a.nama} beserta seluruh cabangnya`}
+                      >
+                        🗑
+                      </button>
+                    </div>
                   )}
                 </td>
               </tr>
@@ -328,8 +337,9 @@ function AnggotaList({ anggotaList, onDelete }) {
 // Halaman Utama Admin
 // ────────────────────────────────────────────────
 export default function AdminPage() {
-  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, deleteAnggota, konfirmasiTransaksi } = useApp();
+  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, updateAnggota, deleteAnggota, konfirmasiTransaksi } = useApp();
   const [activeTab, setActiveTab] = useState("verifikasi");
+  const [editAnggotaItem, setEditAnggotaItem] = useState(null);
   const [newKK, setNewKK] = useState({
     nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: ""
   });
@@ -386,6 +396,16 @@ export default function AdminPage() {
 
   const handleAddAnggota = (parentId, anggota, pasangan, nama) => {
     addAnggota(parentId, anggota, pasangan);
+  };
+
+  const handleEditAnggotaSave = (e) => {
+    e.preventDefault();
+    if (!editAnggotaItem.nama.trim()) {
+      notify("error", "Nama wajib diisi.");
+      return;
+    }
+    updateAnggota(editAnggotaItem);
+    setEditAnggotaItem(null);
   };
 
   const handleDeleteAnggota = (id, nama) => {
@@ -537,6 +557,7 @@ export default function AdminPage() {
                   </div>
                   <AnggotaList
                     anggotaList={anggotaList}
+                    onEdit={setEditAnggotaItem}
                     onDelete={handleDeleteAnggota}
                   />
                 </div>
@@ -676,6 +697,64 @@ export default function AdminPage() {
           </div>
         )}
       </div>
+
+      {/* Edit Modal */}
+      {editAnggotaItem && (
+        <div className="modal-overlay" style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div className="glass-card" style={{ width: "100%", maxWidth: 500, padding: 24, position: "relative" }}>
+            <button
+              onClick={() => setEditAnggotaItem(null)}
+              style={{ position: "absolute", top: 16, right: 16, background: "transparent", border: "none", color: "var(--text-muted)", fontSize: 20, cursor: "pointer" }}
+            >
+              ✕
+            </button>
+            <h3 style={{ marginBottom: 16 }}>✏️ Edit Anggota Silsilah</h3>
+            <form onSubmit={handleEditAnggotaSave}>
+              <div className="form-field">
+                <label>Nama Lengkap</label>
+                <input
+                  type="text"
+                  className="form-input full-width"
+                  value={editAnggotaItem.nama}
+                  onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, nama: e.target.value })}
+                />
+              </div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label>Tahun Lahir</label>
+                  <input
+                    type="text"
+                    className="form-input full-width"
+                    value={editAnggotaItem.lahir || ""}
+                    onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, lahir: e.target.value })}
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Gelar / Subtitle</label>
+                  <input
+                    type="text"
+                    className="form-input full-width"
+                    value={editAnggotaItem.gelar || ""}
+                    onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, gelar: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="form-field">
+                <label>Keterangan</label>
+                <input
+                  type="text"
+                  className="form-input full-width"
+                  value={editAnggotaItem.keterangan || ""}
+                  onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, keterangan: e.target.value })}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary full-width" style={{ marginTop: 16 }}>
+                Simpan Perubahan
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

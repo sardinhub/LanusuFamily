@@ -17,13 +17,8 @@ const AppContext = createContext(null);
 // ── Helper: flatten tree untuk dropdown ──
 export function flattenTree(node, result = []) {
   if (!node) return result;
-  result.push({
-    id: node.id,
-    nama: node.nama,
-    cabang: node.cabang,
-    gelar: node.gelar,
-    jenis_kelamin: node.jenis_kelamin,
-  });
+  const { anak, pasangan, ...rest } = node;
+  result.push(rest);
   if (node.anak?.length) {
     node.anak.forEach((child) => flattenTree(child, result));
   }

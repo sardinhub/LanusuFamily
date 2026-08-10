@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS public.kepala_keluarga (
   cabang            TEXT,
   alamat            TEXT,
   telepon           TEXT,
-  anggota_id        TEXT REFERENCES public.anggota(id),
+  anggota_id        TEXT REFERENCES public.anggota(id) ON DELETE SET NULL,
   created_at        TIMESTAMPTZ DEFAULT NOW(),
   updated_at        TIMESTAMPTZ DEFAULT NOW()
 );

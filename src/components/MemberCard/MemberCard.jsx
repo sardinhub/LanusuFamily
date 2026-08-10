@@ -11,10 +11,23 @@ const BRANCH_LABELS = {
 const GENDER_ICON = { L: "👨", P: "👩" };
 
 export default function MemberCard() {
-  const { selectedMember, clearSelectedMember } = useApp();
+  const { selectedMember, clearSelectedMember, anggotaFlat } = useApp();
   if (!selectedMember) return null;
 
   const branch = BRANCH_LABELS[selectedMember.cabang] || BRANCH_LABELS["root"];
+
+  let parentNameStr = "-";
+  if (selectedMember.parent_id && anggotaFlat) {
+    const parentObj = anggotaFlat.find(a => a.id === selectedMember.parent_id);
+    if (parentObj) {
+      if (parentObj.id === "la-nusu") {
+        const ibuName = selectedMember.cabang === "indo-jani" ? "Indo Jani" : selectedMember.cabang === "indo-sabi" ? "Indo Sabi" : "";
+        parentNameStr = ibuName ? `${parentObj.nama} & ${ibuName}` : parentObj.nama;
+      } else {
+        parentNameStr = parentObj.nama;
+      }
+    }
+  }
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) clearSelectedMember();
@@ -52,6 +65,12 @@ export default function MemberCard() {
           <p className="member-card-gelar">{selectedMember.gelar}</p>
 
           <div className="member-card-details">
+            {selectedMember.parent_id && (
+              <div className="member-detail-row">
+                <span className="detail-label">👨‍👩‍👦 Anak dari</span>
+                <span className="detail-value">{parentNameStr}</span>
+              </div>
+            )}
             {selectedMember.lahir && (
               <div className="member-detail-row">
                 <span className="detail-label">🎂 Lahir</span>

@@ -199,15 +199,24 @@ export default function FamilyTree() {
         return name.length > 14 ? name.slice(0, 14) + "…" : name;
       });
 
-    // Subtitle (gelar / lahir)
+    // Subtitle (gelar / anak dari)
     node.append("text")
       .attr("x", -NODE_W / 2 + 46)
       .attr("y", 10)
       .attr("font-size", 10)
       .attr("fill", "#94a3b8")
       .text((d) => {
-        const label = d.data.gelar || "";
-        return label.length > 20 ? label.slice(0, 20) + "…" : label;
+        let label = d.data.gelar || "";
+        if (!label && d.parent) {
+          const pName = d.parent.data.nama;
+          if (d.parent.data.id === "la-nusu") {
+            const ibu = d.data.cabang === "indo-jani" ? "Indo Jani" : d.data.cabang === "indo-sabi" ? "Indo Sabi" : "";
+            label = ibu ? `Anak ${pName} & ${ibu}` : `Anak ${pName}`;
+          } else {
+            label = `Anak ${pName}`;
+          }
+        }
+        return label.length > 22 ? label.slice(0, 22) + "…" : label;
       });
 
     // Lahir year

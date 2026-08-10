@@ -1,0 +1,49 @@
+.tree-branch-legend {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.branch-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.branch-badge--a {
+  background: var(--color-branch-a-dim);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.branch-badge--b {
+  background: var(--color-branch-b-dim);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.branch-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.branch-badge div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.branch-badge strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.branch-badge span {
+  font-size: 12px;
+  color: var(--text-muted);
+}

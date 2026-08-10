@@ -1,0 +1,450 @@
+.access-denied {
+  padding: var(--spacing-2xl);
+  text-align: center;
+  max-width: 400px;
+  margin: var(--spacing-2xl) auto;
+}
+
+.access-denied span { font-size: 48px; display: block; margin-bottom: var(--spacing-md); }
+.access-denied h2 { color: var(--color-menunggak); margin-bottom: var(--spacing-sm); }
+.access-denied p { font-size: 14px; color: var(--text-muted); }
+
+/* Admin Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+
+.admin-tab:hover {
+  color: var(--text-primary);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.admin-tab.active {
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
+}
+
+.tab-badge {
+  background: var(--color-pending);
+  color: #000;
+  border-radius: var(--radius-full);
+  padding: 1px 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tab-content {
+  animation: pageFadeIn 0.25s ease;
+}
+
+/* Empty State */
+.empty-state {
+  padding: var(--spacing-2xl);
+  text-align: center;
+}
+
+.empty-state span { font-size: 40px; display: block; margin-bottom: var(--spacing-md); }
+.empty-state h3 { margin-bottom: 8px; }
+.empty-state p { color: var(--text-muted); font-size: 14px; }
+
+/* Verif List */
+.verif-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.verif-card {
+  padding: var(--spacing-md);
+}
+
+.verif-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.verif-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.verif-bulan {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.verif-details {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.verif-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.verif-row span { color: var(--text-muted); }
+.verif-row strong { color: var(--text-primary); }
+
+.verif-mock-proof {
+  margin-bottom: var(--spacing-md);
+}
+
+.proof-placeholder {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.proof-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.verif-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.verif-actions .btn { flex: 1; }
+
+/* Add KK Form */
+.add-kk-form {
+  padding: var(--spacing-xl);
+  max-width: 700px;
+}
+
+.kk-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.form-input {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 14px;
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-hint {
+  font-size: 12px;
+  color: var(--color-gold);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ============================================================
+   KELOLA SILSILAH TAB
+   ============================================================ */
+
+.silsilah-tab-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .silsilah-tab-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.silsilah-panel-card {
+  padding: var(--spacing-lg);
+}
+
+.silsilah-panel-left {
+  position: sticky;
+  top: calc(var(--navbar-height) + 24px);
+}
+
+.silsilah-panel-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.silsilah-panel-header h3 {
+  font-size: 16px;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.silsilah-panel-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Form sections */
+.silsilah-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  background: rgba(255,255,255,0.02);
+}
+
+.form-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Parent preview after selecting */
+.parent-preview {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--color-gold-dim);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.parent-preview span:first-child {
+  color: var(--text-muted);
+}
+
+.parent-preview strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Error states */
+.input-error {
+  border-color: var(--color-menunggak) !important;
+}
+
+.error-msg {
+  font-size: 11px;
+  color: var(--color-menunggak);
+  margin-top: 3px;
+  display: block;
+}
+
+/* Gender Toggle */
+.gender-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.gender-btn {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gender-btn:hover {
+  border-color: var(--color-border-light);
+  color: var(--text-primary);
+}
+
+.gender-btn.active {
+  background: var(--color-gold-dim);
+  border-color: rgba(212,168,83,0.4);
+  color: var(--color-gold);
+}
+
+/* Toggle Checkbox (sudah menikah) */
+.toggle-checkbox-row {
+  margin-bottom: var(--spacing-sm);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.toggle-label input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-switch {
+  width: 36px;
+  height: 20px;
+  background: var(--color-border);
+  border-radius: 10px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  top: 3px;
+  left: 3px;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.toggle-label input:checked ~ .toggle-switch {
+  background: var(--color-gold-dim);
+  border: 1px solid rgba(212,168,83,0.4);
+}
+
+.toggle-label input:checked ~ .toggle-switch::after {
+  transform: translateX(16px);
+  background: var(--color-gold);
+}
+
+.pasangan-fields {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  animation: pageFadeIn 0.2s ease;
+}
+
+/* Anggota List */
+.anggota-list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.anggota-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.anggota-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Tip banner */
+.silsilah-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--color-branch-b-dim);
+  border: 1px solid rgba(16,185,129,0.2);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+
+.silsilah-tip span {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.silsilah-tip p {
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.silsilah-tip a {
+  color: var(--color-branch-b);
+}
+

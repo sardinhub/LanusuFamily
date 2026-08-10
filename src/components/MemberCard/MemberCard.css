@@ -1,0 +1,112 @@
+.member-card {
+  text-align: center;
+  max-width: 400px;
+  padding-top: var(--spacing-2xl);
+}
+
+.member-card-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.member-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-md);
+  border: 3px solid;
+  overflow: hidden;
+  position: relative;
+}
+
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.member-avatar-icon {
+  font-size: 36px;
+}
+
+.member-avatar--root {
+  background: var(--color-gold-dim);
+  border-color: var(--color-gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.member-avatar--indo-jani {
+  background: var(--color-branch-a-dim);
+  border-color: var(--color-branch-a);
+  box-shadow: var(--shadow-glow-a);
+}
+
+.member-avatar--indo-sabi {
+  background: var(--color-branch-b-dim);
+  border-color: var(--color-branch-b);
+  box-shadow: var(--shadow-glow-b);
+}
+
+.member-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.member-card-badges {
+  display: flex;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.member-card-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+.member-card-gelar {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.member-card-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: var(--spacing-md);
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.member-detail-row {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.detail-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}

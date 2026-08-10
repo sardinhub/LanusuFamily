@@ -175,14 +175,20 @@
 
 .form-input {
   width: 100%;
-  background: var(--color-surface);
+  background: #ffffff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: #000000;
   font-family: var(--font-body);
   font-size: 14px;
   padding: 10px 14px;
   transition: border-color var(--transition-fast);
+}
+
+.form-input:disabled {
+  background: #e2e8f0;
+  color: #475569;
+  cursor: not-allowed;
 }
 
 .form-input:focus {
@@ -191,7 +197,7 @@
 }
 
 .form-input::placeholder {
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 .input-hint {

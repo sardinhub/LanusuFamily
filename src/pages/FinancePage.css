@@ -41,10 +41,10 @@
 }
 
 .filter-select {
-  background: var(--color-surface);
+  background: #ffffff;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+  color: #000000;
   font-family: var(--font-body);
   font-size: 14px;
   padding: 8px 12px;
@@ -58,7 +58,8 @@
 }
 
 .filter-select option {
-  background: var(--color-bg-2);
+  background: #ffffff;
+  color: #000000;
 }
 
 /* Finance grid layout */

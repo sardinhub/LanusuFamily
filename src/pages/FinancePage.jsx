@@ -137,11 +137,11 @@ export default function FinancePage() {
             </select>
           </div>
           <div className="filter-group">
-            <label>🌿 Cabang</label>
+            <label>🌿 Garis Keturunan</label>
             <select value={filterCabang} onChange={(e) => setFilterCabang(e.target.value)} className="filter-select">
-              <option value="semua">Semua Cabang</option>
-              <option value="indo-jani">Cabang Indo Jani</option>
-              <option value="indo-sabi">Cabang Indo Sabi</option>
+              <option value="semua">Semua Garis Keturunan</option>
+              <option value="indo-jani">Garis Keturunan Indo Jani</option>
+              <option value="indo-sabi">Garis Keturunan Indo Sabi</option>
             </select>
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function FinancePage() {
                         <span>{formatRupiah(kk.tagihan_bulanan)}/bln</span>
                       </div>
                       <div className="kk-detail">
-                        <span>🌿 Cabang</span>
+                        <span>🌿 Garis Keturunan</span>
                         <span className={`badge badge-${kk.cabang === "indo-jani" ? "branch-a" : "branch-b"} badge-xs`}>
                           {kk.cabang === "indo-jani" ? "Indo Jani" : "Indo Sabi"}
                         </span>

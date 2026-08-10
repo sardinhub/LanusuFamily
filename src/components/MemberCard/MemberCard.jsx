@@ -4,8 +4,8 @@ import "./MemberCard.css";
 
 const BRANCH_LABELS = {
   root: { label: "Leluhur", class: "badge-gold" },
-  "indo-jani": { label: "Cabang Indo Jani", class: "badge-branch-a" },
-  "indo-sabi": { label: "Cabang Indo Sabi", class: "badge-branch-b" },
+  "indo-jani": { label: "Garis Keturunan Indo Jani", class: "badge-branch-a" },
+  "indo-sabi": { label: "Garis Keturunan Indo Sabi", class: "badge-branch-b" },
 };
 
 const GENDER_ICON = { L: "👨", P: "👩" };
@@ -17,16 +17,19 @@ export default function MemberCard() {
   const branch = BRANCH_LABELS[selectedMember.cabang] || BRANCH_LABELS["root"];
 
   let parentNameStr = "-";
-  if (selectedMember.parent_id && anggotaFlat) {
-    const parentObj = anggotaFlat.find(a => a.id === selectedMember.parent_id);
-    if (parentObj) {
-      if (parentObj.id === "la-nusu") {
-        const ibuName = selectedMember.cabang === "indo-jani" ? "Indo Jani" : selectedMember.cabang === "indo-sabi" ? "Indo Sabi" : "";
-        parentNameStr = ibuName ? `${parentObj.nama} & ${ibuName}` : parentObj.nama;
-      } else {
-        parentNameStr = parentObj.nama;
-      }
+  if (selectedMember._parentObj) {
+    const parentObj = selectedMember._parentObj;
+    if (parentObj.id === "la-nusu") {
+      const ibuName = selectedMember.cabang === "indo-jani" ? "Indo Jani" : selectedMember.cabang === "indo-sabi" ? "Indo Sabi" : "";
+      parentNameStr = ibuName ? `${parentObj.nama} & ${ibuName}` : parentObj.nama;
+    } else {
+      const spouseName = parentObj.pasangan?.[0]?.nama;
+      parentNameStr = spouseName ? `${parentObj.nama} & ${spouseName}` : parentObj.nama;
     }
+  } else if (selectedMember.parent_id && anggotaFlat) {
+    // Fallback if not clicked from tree
+    const parentObj = anggotaFlat.find(a => a.id === selectedMember.parent_id);
+    parentNameStr = parentObj ? parentObj.nama : "-";
   }
 
   const handleOverlayClick = (e) => {

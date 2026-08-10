@@ -151,7 +151,8 @@ export default function FamilyTree() {
       .style("cursor", "pointer")
       .on("click", (event, d) => {
         event.stopPropagation();
-        setSelectedMember(d.data);
+        const memberData = { ...d.data, _parentObj: d.parent ? d.parent.data : null };
+        setSelectedMember(memberData);
       });
 
     // Hover glow
@@ -213,7 +214,8 @@ export default function FamilyTree() {
             const ibu = d.data.cabang === "indo-jani" ? "Indo Jani" : d.data.cabang === "indo-sabi" ? "Indo Sabi" : "";
             label = ibu ? `Anak ${pName} & ${ibu}` : `Anak ${pName}`;
           } else {
-            label = `Anak ${pName}`;
+            const spouse = d.parent.data.pasangan?.[0]?.nama;
+            label = spouse ? `Anak ${pName} & ${spouse}` : `Anak ${pName}`;
           }
         }
         return label.length > 22 ? label.slice(0, 22) + "…" : label;

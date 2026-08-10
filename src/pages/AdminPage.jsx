@@ -186,7 +186,7 @@ function SilsilahForm({ anggotaList, onSubmit }) {
           <div className="form-field">
             {selectedParent?.id === "la-nusu" ? (
               <>
-                <label>Dari Istri (Cabang) *</label>
+                <label>Dari Istri (Garis Keturunan) *</label>
                 <select
                   className="filter-select full-width"
                   value={form.cabang}
@@ -198,12 +198,12 @@ function SilsilahForm({ anggotaList, onSubmit }) {
               </>
             ) : (
               <>
-                <label>Cabang Keluarga</label>
+                <label>Garis Keturunan</label>
                 <input
                   type="text"
                   className="form-input"
                   disabled
-                  value={form.cabang === "indo-jani" ? "Cabang Indo Jani (Otomatis)" : "Cabang Indo Sabi (Otomatis)"}
+                  value={form.cabang === "indo-jani" ? "Garis Keturunan Indo Jani (Otomatis)" : "Garis Keturunan Indo Sabi (Otomatis)"}
                 />
               </>
             )}
@@ -333,7 +333,7 @@ function AnggotaList({ anggotaList, onEdit, onDelete }) {
             <tr>
               <th>Nama</th>
               <th>JK</th>
-              <th>Cabang</th>
+              <th>Garis Keturunan</th>
               <th>Aksi</th>
             </tr>
           </thead>
@@ -659,11 +659,14 @@ export default function AdminPage() {
                     <span className="input-hint">Tagihan: {formatRupiah(newKK.jumlah_anggota * 10000)}/bulan (Rp10.000/orang)</span>
                   </div>
                   <div className="form-field">
-                    <label>Cabang Keluarga</label>
-                    <select className="filter-select" style={{ width: "100%" }}
-                      value={newKK.cabang} onChange={(e) => setNewKK({ ...newKK, cabang: e.target.value })}>
-                      <option value="indo-jani">Cabang Indo Jani</option>
-                      <option value="indo-sabi">Cabang Indo Sabi</option>
+                    <label>Garis Keturunan</label>
+                    <select
+                      className="filter-select full-width"
+                      value={newKK.cabang}
+                      onChange={(e) => setNewKK({ ...newKK, cabang: e.target.value })}
+                    >
+                      <option value="indo-jani">Garis Keturunan Indo Jani</option>
+                      <option value="indo-sabi">Garis Keturunan Indo Sabi</option>
                     </select>
                   </div>
                 </div>
@@ -700,8 +703,9 @@ export default function AdminPage() {
                   <thead>
                     <tr>
                       <th>Kepala Keluarga</th>
-                      <th>Cabang</th>
-                      <th>Tagihan</th>
+                      <th>Garis Keturunan</th>
+                      <th>Jml Anggota</th>
+                      <th>Tagihan/bln</th>
                       {BULAN_LIST.map((b) => (
                         <th key={b} style={{ textAlign: "center" }}>{BULAN_LABELS[b].split(" ")[0]}</th>
                       ))}

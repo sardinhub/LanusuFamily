@@ -121,7 +121,7 @@ export default function ProfilePage() {
               <span className={`badge badge-${kk.cabang === "indo-jani" ? "branch-a" : "branch-b"}`}>
                 {kk.cabang === "indo-jani" ? "Indo Jani" : "Indo Sabi"}
               </span>
-              <label>Cabang</label>
+              <label>Garis Keturunan</label>
             </div>
           </div>
         </div>

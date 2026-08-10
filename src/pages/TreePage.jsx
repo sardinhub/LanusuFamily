@@ -48,14 +48,14 @@ export default function TreePage() {
           <div className="branch-badge branch-badge--a">
             <span className="branch-dot" style={{ background: "#3b82f6" }} />
             <div>
-              <strong>Cabang Indo Jani</strong>
+              <strong>Garis Keturunan Indo Jani</strong>
               <span>Damis Nusu · Maraunga</span>
             </div>
           </div>
           <div className="branch-badge branch-badge--b">
             <span className="branch-dot" style={{ background: "#10b981" }} />
             <div>
-              <strong>Cabang Indo Sabi</strong>
+              <strong>Garis Keturunan Indo Sabi</strong>
               <span>Munawarah · Kamarullah</span>
             </div>
           </div>

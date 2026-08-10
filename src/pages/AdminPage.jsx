@@ -117,11 +117,13 @@ function SilsilahForm({ anggotaList, onSubmit }) {
           {errors.parent_id && <span className="error-msg">{errors.parent_id}</span>}
           {selectedParent && (
             <div className="parent-preview">
-              <span>Anak dari:</span>
+              <span>Menambahkan keturunan dari:</span>
               <strong>{selectedParent.nama}</strong>
-              <span className={`badge badge-${selectedParent.cabang === "indo-jani" ? "branch-a" : selectedParent.cabang === "indo-sabi" ? "branch-b" : "gold"}`}>
-                {selectedParent.cabang === "root" ? "La Nusu" : selectedParent.cabang === "indo-jani" ? "Indo Jani" : "Indo Sabi"}
-              </span>
+              {selectedParent.id !== "la-nusu" && (
+                <span className={`badge badge-${selectedParent.cabang === "indo-jani" ? "branch-a" : selectedParent.cabang === "indo-sabi" ? "branch-b" : "gold"}`}>
+                  {selectedParent.cabang === "indo-jani" ? "Indo Jani" : "Indo Sabi"}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -176,15 +178,29 @@ function SilsilahForm({ anggotaList, onSubmit }) {
             {errors.lahir && <span className="error-msg">{errors.lahir}</span>}
           </div>
           <div className="form-field">
-            <label>Cabang Keluarga</label>
-            <select
-              className="filter-select full-width"
-              value={form.cabang}
-              onChange={(e) => setForm({ ...form, cabang: e.target.value })}
-            >
-              <option value="indo-jani">Cabang Indo Jani</option>
-              <option value="indo-sabi">Cabang Indo Sabi</option>
-            </select>
+            {selectedParent?.id === "la-nusu" ? (
+              <>
+                <label>Dari Istri (Cabang) *</label>
+                <select
+                  className="filter-select full-width"
+                  value={form.cabang}
+                  onChange={(e) => setForm({ ...form, cabang: e.target.value })}
+                >
+                  <option value="indo-jani">Istri 1: Indo Jani</option>
+                  <option value="indo-sabi">Istri 2: Indo Sabi</option>
+                </select>
+              </>
+            ) : (
+              <>
+                <label>Cabang Keluarga</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  disabled
+                  value={form.cabang === "indo-jani" ? "Cabang Indo Jani (Otomatis)" : "Cabang Indo Sabi (Otomatis)"}
+                />
+              </>
+            )}
           </div>
         </div>
         <div className="form-field">

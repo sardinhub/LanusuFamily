@@ -8,6 +8,7 @@ import TreePage from "./pages/TreePage";
 import FinancePage from "./pages/FinancePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
+import BirthdayModal from "./components/BirthdayModal/BirthdayModal";
 import "./index.css";
 
 // ── Toast notification global ──
@@ -109,6 +110,7 @@ function AppContent() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toast />
+      <BirthdayModal />
     </AppProvider>
   );
 }

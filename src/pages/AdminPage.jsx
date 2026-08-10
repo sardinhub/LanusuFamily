@@ -18,12 +18,14 @@ const EMPTY_ANGGOTA = {
   nama: "",
   jenis_kelamin: "L",
   lahir: "",
+  tempat_lahir: "",
+  tanggal_lahir: "",
   parent_id: "",
   cabang: "indo-jani",
   keterangan: "",
   sudah_menikah: false,
   pasangan_list: [
-    { nama_pasangan: "", lahir_pasangan: "" }
+    { nama_pasangan: "", lahir_pasangan: "", tempat_lahir_pasangan: "", tanggal_lahir_pasangan: "" }
   ]
 };
 
@@ -49,7 +51,7 @@ function SilsilahForm({ anggotaList, onSubmit }) {
     const errs = {};
     if (!form.nama.trim()) errs.nama = "Nama wajib diisi";
     if (!form.parent_id) errs.parent_id = "Pilih orang tua";
-    if (!form.lahir.trim()) errs.lahir = "Tahun lahir wajib diisi";
+    if (!form.lahir.trim() && !form.tanggal_lahir) errs.lahir = "Tahun atau tanggal lahir wajib diisi";
     if (form.sudah_menikah) {
       form.pasangan_list.forEach((p, index) => {
         if (!p.nama_pasangan.trim()) {
@@ -70,7 +72,9 @@ function SilsilahForm({ anggotaList, onSubmit }) {
           nama: p.nama_pasangan,
           gelar: form.jenis_kelamin === "L" ? (form.pasangan_list.length > 1 ? `Istri ${index + 1}` : "Istri") : (form.pasangan_list.length > 1 ? `Suami ${index + 1}` : "Suami"),
           jenis_kelamin: form.jenis_kelamin === "L" ? "P" : "L",
-          lahir: p.lahir_pasangan || null,
+          lahir: p.lahir_pasangan || (p.tanggal_lahir_pasangan ? p.tanggal_lahir_pasangan.substring(0, 4) : null),
+          tempat_lahir: p.tempat_lahir_pasangan || null,
+          tanggal_lahir: p.tanggal_lahir_pasangan || null,
           meninggal: null,
           foto: null,
           cabang: form.cabang,
@@ -81,7 +85,9 @@ function SilsilahForm({ anggotaList, onSubmit }) {
       nama: form.nama.trim(),
       gelar: "", // akan diisi otomatis oleh context/tree
       jenis_kelamin: form.jenis_kelamin,
-      lahir: form.lahir.trim(),
+      lahir: form.lahir.trim() || (form.tanggal_lahir ? form.tanggal_lahir.substring(0, 4) : null),
+      tempat_lahir: form.tempat_lahir.trim() || null,
+      tanggal_lahir: form.tanggal_lahir || null,
       meninggal: null,
       foto: null,
       cabang: form.cabang,
@@ -172,7 +178,26 @@ function SilsilahForm({ anggotaList, onSubmit }) {
         </div>
         <div className="form-row">
           <div className="form-field">
-            <label>Tahun Lahir *</label>
+            <label>Tanggal Lahir</label>
+            <input
+              type="date"
+              className="form-input"
+              value={form.tanggal_lahir}
+              onChange={(e) => setForm({ ...form, tanggal_lahir: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <label>Tempat Lahir</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="cth: Makassar"
+              value={form.tempat_lahir}
+              onChange={(e) => setForm({ ...form, tempat_lahir: e.target.value })}
+            />
+          </div>
+          <div className="form-field">
+            <label>Tahun Lahir (Alternatif) *</label>
             <input
               type="text"
               className={`form-input ${errors.lahir ? "input-error" : ""}`}
@@ -269,7 +294,34 @@ function SilsilahForm({ anggotaList, onSubmit }) {
                     {errors[`nama_pasangan_${index}`] && <span className="error-msg">{errors[`nama_pasangan_${index}`]}</span>}
                   </div>
                   <div className="form-field">
-                    <label>Tahun Lahir Pasangan</label>
+                    <label>Tanggal Lahir</label>
+                    <input
+                      type="date"
+                      className="form-input"
+                      value={p.tanggal_lahir_pasangan}
+                      onChange={(e) => {
+                        const newList = [...form.pasangan_list];
+                        newList[index].tanggal_lahir_pasangan = e.target.value;
+                        setForm({ ...form, pasangan_list: newList });
+                      }}
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Tempat Lahir</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="cth: Bone"
+                      value={p.tempat_lahir_pasangan}
+                      onChange={(e) => {
+                        const newList = [...form.pasangan_list];
+                        newList[index].tempat_lahir_pasangan = e.target.value;
+                        setForm({ ...form, pasangan_list: newList });
+                      }}
+                    />
+                  </div>
+                  <div className="form-field">
+                    <label>Tahun Lahir</label>
                     <input
                       type="text"
                       className="form-input"
@@ -290,7 +342,7 @@ function SilsilahForm({ anggotaList, onSubmit }) {
               type="button"
               className="btn btn-outline"
               style={{ width: "100%", fontSize: "0.85rem", marginTop: "8px" }}
-              onClick={() => setForm({ ...form, pasangan_list: [...form.pasangan_list, { nama_pasangan: "", lahir_pasangan: "" }] })}
+              onClick={() => setForm({ ...form, pasangan_list: [...form.pasangan_list, { nama_pasangan: "", lahir_pasangan: "", tempat_lahir_pasangan: "", tanggal_lahir_pasangan: "" }] })}
             >
               ➕ Tambah Pasangan Lainnya
             </button>

@@ -32,6 +32,20 @@ export default function MemberCard() {
     parentNameStr = parentObj ? parentObj.nama : "-";
   }
 
+  let ttl = selectedMember.lahir || "";
+  let age = null;
+  if (selectedMember.tanggal_lahir) {
+    const d = new Date(selectedMember.tanggal_lahir);
+    if (!isNaN(d.getTime())) {
+      const formattedDate = d.toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' });
+      ttl = selectedMember.tempat_lahir ? `${selectedMember.tempat_lahir}, ${formattedDate}` : formattedDate;
+      const diff = Date.now() - d.getTime();
+      age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    }
+  } else if (selectedMember.tempat_lahir && selectedMember.lahir) {
+    ttl = `${selectedMember.tempat_lahir}, ${selectedMember.lahir}`;
+  }
+
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) clearSelectedMember();
   };
@@ -74,10 +88,12 @@ export default function MemberCard() {
                 <span className="detail-value">{parentNameStr}</span>
               </div>
             )}
-            {selectedMember.lahir && (
+            {ttl && (
               <div className="member-detail-row">
                 <span className="detail-label">🎂 Lahir</span>
-                <span className="detail-value">{selectedMember.lahir}</span>
+                <span className="detail-value">
+                  {ttl} {age !== null && <span style={{color: "#3b82f6", fontWeight: "600"}}>({age} tahun)</span>}
+                </span>
               </div>
             )}
             {selectedMember.meninggal && (

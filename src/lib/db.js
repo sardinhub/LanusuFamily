@@ -85,7 +85,7 @@ export async function fetchSilsilah() {
 export async function fetchAnggotaFlat() {
   const { data, error } = await supabase
     .from("anggota")
-    .select("id, nama, cabang, gelar, jenis_kelamin")
+    .select("id, nama, cabang, gelar, jenis_kelamin, lahir, tempat_lahir, tanggal_lahir")
     .order("nama");
   if (error) throw error;
   return data || [];

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from "react";
 import { useAuth } from "./AuthContext";
+import { usePasscode } from "./PasscodeContext";
 import {
   fetchSilsilah,
   fetchAnggotaFlat,
@@ -86,22 +87,25 @@ function reducer(state, action) {
 
 export function AppProvider({ children }) {
   const { user, profile } = useAuth();
+  const { guestMode } = usePasscode();
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // ── Load semua data saat user login ──
+  // ── Load semua data saat user login ATAU guest mode aktif ──
   const loadData = useCallback(async () => {
-    if (!user) {
+    // Muat data jika login Supabase ATAU akses via passcode (guest)
+    if (!user && !guestMode) {
       dispatch({ type: "SET_LOADING", payload: false });
       return;
     }
     dispatch({ type: "SET_LOADING", payload: true });
     try {
+      // Guest hanya bisa lihat semua data publik (silsilah + transaksi umum)
       const kkId = profile?.role === "user" ? profile?.kk_id : null;
       const [silsilah, anggotaFlat, kepalaKeluarga, transaksi] = await Promise.all([
         fetchSilsilah(),
         fetchAnggotaFlat(),
         fetchKepalaKeluarga(),
-        fetchTransaksi(kkId), // user hanya lihat KK-nya sendiri; admin lihat semua
+        fetchTransaksi(kkId),
       ]);
       dispatch({
         type: "SET_DATA",
@@ -112,7 +116,7 @@ export function AppProvider({ children }) {
       dispatch({ type: "SET_LOADING", payload: false });
       notify("error", "Gagal memuat data. Periksa koneksi dan coba lagi.");
     }
-  }, [user, profile]);
+  }, [user, profile, guestMode]);
 
   useEffect(() => {
     loadData();

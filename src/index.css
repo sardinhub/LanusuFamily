@@ -543,24 +543,91 @@ tbody tr:hover {
    RESPONSIVE
    ============================================================ */
 
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile Large (≤ 768px) ── */
 @media (max-width: 768px) {
+  :root {
+    --navbar-height: 60px;
+  }
+
   .container {
     padding: 0 var(--spacing-md);
   }
 
+  .page-content {
+    padding-top: calc(var(--navbar-height) + var(--spacing-lg));
+    padding-bottom: calc(var(--spacing-2xl) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  h1 { font-size: clamp(20px, 5vw, 28px); }
+  h2 { font-size: clamp(17px, 4vw, 22px); }
+
+  /* Table: smaller padding on mobile */
+  th { padding: 10px 12px; font-size: 11px; }
+  td { padding: 10px 12px; font-size: 13px; }
+
+  /* Toast: center bottom on mobile */
+  .toast {
+    bottom: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    font-size: 13px;
+  }
+
+  /* Modal: full-screen bottom sheet on mobile */
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-box {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-width: 100%;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: var(--spacing-xl) var(--spacing-lg) calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
+    animation: slideUpMobile 0.3s ease;
+  }
+
+  @keyframes slideUpMobile {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+
+/* ── Mobile Small (≤ 480px) ── */
+@media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: 1fr 1fr;
   }
 
-  .page-content {
-    padding-top: calc(var(--navbar-height) + var(--spacing-lg));
+  .stat-value {
+    font-size: 22px;
   }
 }
 
-@media (max-width: 480px) {
+/* ── Mobile XS (≤ 380px) ── */
+@media (max-width: 380px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+
+  th { padding: 8px 10px; }
+  td { padding: 8px 10px; font-size: 12px; }
 }
 
 /* ============================================================
@@ -595,3 +662,4 @@ body::after {
   position: relative;
   z-index: 1;
 }
+

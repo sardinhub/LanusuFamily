@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { signIn } from "../../lib/db";
+import PasscodeModal from "./PasscodeModal";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -8,6 +9,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPass, setShowPass] = useState(false);
+  const [showPasscode, setShowPasscode] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,7 +119,31 @@ export default function LoginPage() {
         <p className="login-footer">
           Belum punya akun? Hubungi Admin Keluarga La Nusu.
         </p>
+
+        {/* Divider */}
+        <div className="login-divider">
+          <span>atau</span>
+        </div>
+
+        {/* Guest / Passcode entry */}
+        <button
+          type="button"
+          className="login-guest-btn"
+          onClick={() => setShowPasscode(true)}
+          id="login-guest-btn"
+        >
+          <span>👨‍👩‍👧‍👦</span>
+          <span>Masuk sebagai Anggota Keluarga</span>
+        </button>
+
+        <p className="login-guest-hint">
+          Gunakan PIN yang dibagikan Admin untuk akses terbatas (baca saja)
+        </p>
       </div>
+
+      {showPasscode && (
+        <PasscodeModal onClose={() => setShowPasscode(false)} />
+      )}
     </div>
   );
 }

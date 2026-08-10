@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { PasscodeProvider, usePasscode } from "./context/PasscodeContext";
 import { AppProvider, useApp } from "./context/AppContext";
 import Navbar from "./components/Navbar/Navbar";
 import LoginPage from "./pages/LoginPage/LoginPage";
@@ -59,10 +60,14 @@ function LoadingScreen() {
 }
 
 // ── Protected route — redirect ke /login jika belum login ──
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, adminOnly = false }) {
   const { user, authLoading } = useAuth();
+  const { guestMode } = usePasscode();
   if (authLoading) return <LoadingScreen />;
-  if (!user) return <Navigate to="/login" replace />;
+  // Guest tidak bisa akses admin-only pages
+  if (adminOnly && !user) return <Navigate to="/" replace />;
+  // Guest bisa akses halaman umum
+  if (!user && !guestMode) return <Navigate to="/login" replace />;
   return children;
 }
 
@@ -76,11 +81,12 @@ function AdminRoute({ children }) {
 // ── App content (inside BrowserRouter + Providers) ──
 function AppContent() {
   const { user, authLoading } = useAuth();
+  const { guestMode } = usePasscode();
 
   if (authLoading) return <LoadingScreen />;
 
-  // Jika belum login, hanya tampilkan halaman login
-  if (!user) {
+  // Jika belum login & bukan guest, hanya tampilkan halaman login
+  if (!user && !guestMode) {
     return (
       <Routes>
         <Route path="/login" element={<LoginPage />} />
@@ -95,11 +101,11 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<ProtectedRoute><TreePage /></ProtectedRoute>} />
         <Route path="/keuangan" element={<ProtectedRoute><FinancePage /></ProtectedRoute>} />
-        <Route path="/profil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/profil" element={<ProtectedRoute adminOnly><ProfilePage /></ProtectedRoute>} />
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminOnly>
               <AdminRoute>
                 <AdminPage />
               </AdminRoute>
@@ -118,9 +124,11 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <PasscodeProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </PasscodeProvider>
     </AuthProvider>
   );
 }

@@ -454,3 +454,48 @@
   color: var(--color-branch-b);
 }
 
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .admin-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0;
+    scrollbar-width: none;
+  }
+  .admin-tabs::-webkit-scrollbar { display: none; }
+
+  .admin-tab {
+    padding: 10px 14px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* Two-column forms → single column */
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Admin content sections stack */
+  .admin-split {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Filter bar wraps */
+  .admin-filters {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .admin-filters .filter-select,
+  .admin-filters input {
+    width: 100%;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-tab span { display: none; }
+  .admin-tab { padding: 10px 12px; }
+  .silsilah-form { padding: var(--spacing-md); }
+}

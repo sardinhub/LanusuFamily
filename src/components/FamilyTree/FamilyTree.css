@@ -16,6 +16,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .family-tree-legend {
@@ -48,10 +49,41 @@
 }
 
 /* D3 elements */
-.tree-link {
-  transition: stroke-opacity 0.2s;
+.tree-link { transition: stroke-opacity 0.2s; }
+.tree-node { transition: opacity 0.2s; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .family-tree-wrap {
+    height: calc(100vh - var(--navbar-height) - 130px);
+    min-height: 420px;
+    border-radius: var(--radius-md);
+  }
+
+  .family-tree-legend {
+    top: auto;
+    bottom: 12px;
+    left: 8px;
+    right: 8px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 6px 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .legend-tip {
+    display: none; /* sembunyikan hint panjang di mobile */
+  }
+
+  .legend-item { font-size: 11px; }
 }
 
-.tree-node {
-  transition: opacity 0.2s;
+@media (max-width: 480px) {
+  .family-tree-wrap {
+    height: calc(100vh - var(--navbar-height) - 100px);
+    min-height: 380px;
+  }
 }
+

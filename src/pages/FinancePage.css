@@ -274,3 +274,50 @@
 .rekap-panel {
   padding: var(--spacing-lg);
 }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .finance-filters {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-select {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+
+  .kk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .finance-side {
+    position: static;
+  }
+
+  .status-summary {
+    gap: var(--spacing-xs);
+  }
+
+  .status-summary-item {
+    padding: 8px 12px;
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kk-card-top {
+    flex-wrap: wrap;
+  }
+
+  .status-count {
+    font-size: 16px;
+  }
+}
+

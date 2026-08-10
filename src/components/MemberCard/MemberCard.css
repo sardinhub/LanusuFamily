@@ -72,6 +72,15 @@
   margin-top: 4px;
 }
 
+.member-card-alm {
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 2px;
+}
+
 .member-card-gelar {
   font-size: 13px;
   color: var(--text-muted);

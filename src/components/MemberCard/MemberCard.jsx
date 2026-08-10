@@ -74,11 +74,20 @@ export default function MemberCard() {
           <div className="member-card-badges">
             <span className={`badge ${branch.class}`}>{branch.label}</span>
             {selectedMember.meninggal && (
-              <span className="badge badge-belum">Almarhum/ah</span>
+              <span className="badge badge-belum">
+                {selectedMember.jenis_kelamin === "L" ? "Almarhum" : "Almarhumah"}
+              </span>
             )}
           </div>
 
-          <h2 className="member-card-name">{selectedMember.nama}</h2>
+          <h2 className="member-card-name">
+            {selectedMember.nama}
+            {selectedMember.meninggal && (
+              <span className="member-card-alm">
+                {selectedMember.jenis_kelamin === "L" ? " (Almarhum)" : " (Almarhumah)"}
+              </span>
+            )}
+          </h2>
           <p className="member-card-gelar">{selectedMember.gelar}</p>
 
           <div className="member-card-details">

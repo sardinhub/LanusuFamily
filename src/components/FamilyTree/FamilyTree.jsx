@@ -3,6 +3,12 @@ import * as d3 from "d3";
 import { useApp } from "../../context/AppContext";
 import "./FamilyTree.css";
 
+// Helper: label almarhum/almarhumah
+function getAlmLabel(d) {
+  if (!d.data.meninggal) return "";
+  return d.data.jenis_kelamin === "L" ? " (Alm.)" : " (Almh.)";
+}
+
 // Branch config
 const BRANCH = {
   root: { color: "#d4a853", dim: "rgba(212,168,83,0.15)", glow: "rgba(212,168,83,0.4)" },
@@ -194,10 +200,12 @@ export default function FamilyTree() {
       .attr("font-family", "Playfair Display, serif")
       .attr("font-size", 13)
       .attr("font-weight", "600")
-      .attr("fill", "#f1f5f9")
+      .attr("fill", (d) => d.data.meninggal ? "#94a3b8" : "#f1f5f9")
       .text((d) => {
         const name = d.data.nama;
-        return name.length > 14 ? name.slice(0, 14) + "…" : name;
+        const alm = getAlmLabel(d);
+        const full = name + alm;
+        return full.length > 18 ? name.slice(0, 14) + "…" + alm : full;
       });
 
     // Subtitle (gelar / anak dari)

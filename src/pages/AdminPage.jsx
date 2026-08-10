@@ -120,6 +120,7 @@ function SilsilahForm({ anggotaList, onSubmit }) {
             {anggotaList.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.nama}
+                {a.meninggal ? (a.jenis_kelamin === "L" ? " (Alm.)" : " (Almh.)") : ""}
                 {a.jenis_kelamin === "L" ? " (Ayah)" : " (Ibu)"}
                 {" — "}
                 {a.cabang === "root" ? "La Nusu" : a.cabang === "indo-jani" ? "Indo Jani" : "Indo Sabi"}

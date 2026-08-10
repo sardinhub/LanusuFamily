@@ -712,6 +712,8 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+        )}
+
         {/* Tab: Input Pembayaran */}
         {activeTab === "pembayaran" && (
           <div className="tab-content">

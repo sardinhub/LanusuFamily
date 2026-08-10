@@ -447,11 +447,53 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("verifikasi");
   const [editAnggotaItem, setEditAnggotaItem] = useState(null);
   const [newKK, setNewKK] = useState({
-    nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: ""
+    selected_id: "", nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: ""
   });
 
   // Flatten silsilah untuk dropdown orang tua — re-compute saat tree berubah
   const anggotaList = useMemo(() => flattenTree(silsilah), [silsilah]);
+
+  // Kandidat KK: semua anggota yang memiliki pasangan
+  const candidateKKList = useMemo(() => {
+    const list = [];
+    const traverse = (node) => {
+      if (!node) return;
+      if (node.pasangan && node.pasangan.length > 0 && node.id !== "la-nusu") {
+        list.push(node);
+      }
+      if (node.anak) {
+        node.anak.forEach(child => traverse(child));
+      }
+    };
+    if (silsilah && silsilah.anak) {
+      silsilah.anak.forEach(child => traverse(child));
+    }
+    return list;
+  }, [silsilah]);
+
+  const handleKKCandidateChange = (e) => {
+    const selectedId = e.target.value;
+    if (!selectedId) {
+      setNewKK({ ...newKK, selected_id: "", nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani" });
+      return;
+    }
+    const candidate = candidateKKList.find(c => c.id === selectedId);
+    if (candidate) {
+      const spouseNames = candidate.pasangan.map(p => p.nama).join(" & ");
+      const countAnak = candidate.anak ? candidate.anak.length : 0;
+      const countPasangan = candidate.pasangan ? candidate.pasangan.length : 0;
+      const totalAnggota = 1 + countPasangan + countAnak;
+      
+      setNewKK({
+        ...newKK,
+        selected_id: candidate.id,
+        nama_kk: candidate.nama,
+        nama_pasangan: spouseNames,
+        jumlah_anggota: totalAnggota,
+        cabang: candidate.cabang && candidate.cabang !== "root" ? candidate.cabang : "indo-jani"
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -498,7 +540,7 @@ export default function AdminPage() {
     }
     
     addKepalaKeluarga(newKK);
-    setNewKK({ nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: "" });
+    setNewKK({ selected_id: "", nama_kk: "", nama_pasangan: "", jumlah_anggota: 2, cabang: "indo-jani", alamat: "", telepon: "" });
   };
 
   const handleAddAnggota = (parentId, anggota, pasangan, nama) => {
@@ -698,12 +740,25 @@ export default function AdminPage() {
                 <div className="form-row">
                   <div className="form-field">
                     <label>Nama Kepala Keluarga *</label>
-                    <input type="text" className="form-input" placeholder="Nama lengkap KK"
-                      value={newKK.nama_kk} onChange={(e) => setNewKK({ ...newKK, nama_kk: e.target.value })} />
+                    <select
+                      className="form-input full-width"
+                      value={newKK.selected_id}
+                      onChange={handleKKCandidateChange}
+                    >
+                      <option value="">-- Pilih dari Anggota Silsilah --</option>
+                      {candidateKKList.map(c => (
+                        <option key={c.id} value={c.id}>{c.nama}</option>
+                      ))}
+                    </select>
+                    {!newKK.selected_id && (
+                      <input type="text" className="form-input" placeholder="Atau ketik manual..." style={{ marginTop: 8 }}
+                        value={newKK.nama_kk} onChange={(e) => setNewKK({ ...newKK, nama_kk: e.target.value })} />
+                    )}
                   </div>
                   <div className="form-field">
                     <label>Nama Pasangan *</label>
                     <input type="text" className="form-input" placeholder="Nama lengkap pasangan"
+                      disabled={!!newKK.selected_id}
                       value={newKK.nama_pasangan} onChange={(e) => setNewKK({ ...newKK, nama_pasangan: e.target.value })} />
                   </div>
                 </div>

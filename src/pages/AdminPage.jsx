@@ -443,7 +443,7 @@ function AnggotaList({ anggotaList, onEdit, onDelete }) {
 // Halaman Utama Admin
 // ────────────────────────────────────────────────
 export default function AdminPage() {
-  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, updateAnggota, deleteAnggota, addKepalaKeluarga, konfirmasiTransaksi } = useApp();
+  const { role, notify, silsilah, kepalaKeluarga, transaksi, loading, addAnggota, updateAnggota, deleteAnggota, addKepalaKeluarga, konfirmasiTransaksi, catatPembayaranAdmin } = useApp();
   const [activeTab, setActiveTab] = useState("verifikasi");
   const [editAnggotaItem, setEditAnggotaItem] = useState(null);
   const [newKK, setNewKK] = useState({

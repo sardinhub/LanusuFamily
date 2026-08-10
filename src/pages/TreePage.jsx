@@ -1,9 +1,38 @@
 import React from "react";
 import FamilyTree from "../components/FamilyTree/FamilyTree";
 import MemberCard from "../components/MemberCard/MemberCard";
+import { useApp } from "../context/AppContext";
 import "./TreePage.css";
 
 export default function TreePage() {
+  const { loading, silsilah } = useApp();
+
+  if (loading) {
+    return (
+      <div className="page-content page-fade">
+        <div className="container" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+          <div className="loading-state">
+            <div className="loading-spinner" />
+            <p style={{ marginTop: 16 }}>Memuat data silsilah keluarga...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!silsilah) {
+    return (
+      <div className="page-content page-fade">
+        <div className="container" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+          <div className="glass-card" style={{ padding: 32, textAlign: "center" }}>
+            <h2>⚠️ Database Kosong</h2>
+            <p>Data silsilah belum dimuat. Pastikan Anda sudah menjalankan script <code>seed.sql</code> di Supabase.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page-content page-fade">
       <div className="container">

@@ -511,7 +511,11 @@ export default function AdminPage() {
       notify("error", "Nama wajib diisi.");
       return;
     }
-    updateAnggota(editAnggotaItem);
+    const toUpdate = { ...editAnggotaItem };
+    if (toUpdate.tanggal_lahir) {
+      toUpdate.lahir = toUpdate.tanggal_lahir.substring(0, 4);
+    }
+    updateAnggota(toUpdate);
     setEditAnggotaItem(null);
   };
 
@@ -829,6 +833,26 @@ export default function AdminPage() {
                   value={editAnggotaItem.nama}
                   onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, nama: e.target.value })}
                 />
+              </div>
+              <div className="form-row">
+                <div className="form-field">
+                  <label>Tanggal Lahir</label>
+                  <input
+                    type="date"
+                    className="form-input full-width"
+                    value={editAnggotaItem.tanggal_lahir || ""}
+                    onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, tanggal_lahir: e.target.value })}
+                  />
+                </div>
+                <div className="form-field">
+                  <label>Tempat Lahir</label>
+                  <input
+                    type="text"
+                    className="form-input full-width"
+                    value={editAnggotaItem.tempat_lahir || ""}
+                    onChange={(e) => setEditAnggotaItem({ ...editAnggotaItem, tempat_lahir: e.target.value })}
+                  />
+                </div>
               </div>
               <div className="form-row">
                 <div className="form-field">

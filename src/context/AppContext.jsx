@@ -184,11 +184,12 @@ export function AppProvider({ children }) {
       const slug = kkData.nama_kk.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
       const newId = `kk-${slug}-${Date.now()}`;
       
+      const { selected_id, ...restKkData } = kkData;
       const payload = {
-        ...kkData,
+        ...restKkData,
         id: newId,
         tagihan_bulanan: kkData.jumlah_anggota * 10000,
-        anggota_id: null,
+        anggota_id: selected_id || null,
       };
       
       await insertKepalaKeluarga(payload);

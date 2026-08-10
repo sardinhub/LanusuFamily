@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const { activeKK, kepalaKeluarga, transaksi, loading, submitBuktiTransaksi, notify } = useApp();
   
   const kk = kepalaKeluarga?.find((k) => k.id === activeKK);
-  const [uploadBulan, setUploadBulan] = useState("2025-08");
+  const [uploadBulan, setUploadBulan] = useState("2026-08");
   const [uploadFile, setUploadFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 

@@ -36,7 +36,7 @@ function getStatusCounts(transaksi, kepalaKeluarga, bulan) {
 
 export default function FinancePage() {
   const { kepalaKeluarga, transaksi, loading } = useApp();
-  const [filterBulan, setFilterBulan] = useState("2025-08");
+  const [filterBulan, setFilterBulan] = useState("2026-08");
   const [filterCabang, setFilterCabang] = useState("semua");
 
   if (loading) {

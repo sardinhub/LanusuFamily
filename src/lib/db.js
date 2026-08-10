@@ -200,13 +200,13 @@ export async function deleteAnggota(id) {
 // ─────────────────────────────────────────
 
 export const BULAN_LABELS = {
-  "2025-02": "Februari 2025",
-  "2025-03": "Maret 2025",
-  "2025-04": "April 2025",
-  "2025-05": "Mei 2025",
-  "2025-06": "Juni 2025",
-  "2025-07": "Juli 2025",
-  "2025-08": "Agustus 2025",
+  "2026-08": "Agustus 2026",
+  "2026-09": "September 2026",
+  "2026-10": "Oktober 2026",
+  "2026-11": "November 2026",
+  "2026-12": "Desember 2026",
+  "2027-01": "Januari 2027",
+  "2027-02": "Februari 2027",
 };
 
 export const BULAN_LIST = Object.keys(BULAN_LABELS);
@@ -229,7 +229,7 @@ export function getJumlahTunggakan(transaksi, kk_id) {
   ).length;
 }
 
-export function getLeaderboardBulanIni(transaksi, kepalaKeluarga, bulan = "2025-08") {
+export function getLeaderboardBulanIni(transaksi, kepalaKeluarga, bulan = "2026-08") {
   return transaksi
     .filter((t) => t.bulan_iuran === bulan && t.status === "lunas" && t.tgl_bayar)
     .sort((a, b) => new Date(a.tgl_bayar) - new Date(b.tgl_bayar))

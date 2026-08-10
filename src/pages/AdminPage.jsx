@@ -451,7 +451,7 @@ export default function AdminPage() {
   });
   const [newPembayaran, setNewPembayaran] = useState({
     kk_id: "",
-    bulan_iuran: "2025-08",
+    bulan_iuran: "2026-08",
     nominal_bayar: 0,
     tgl_bayar: new Date().toISOString().slice(0, 10),
     keterangan: ""
@@ -741,7 +741,7 @@ export default function AdminPage() {
                     >
                       <option value="">-- Pilih Kepala Keluarga --</option>
                       {kepalaKeluarga.map(kk => (
-                        <option key={kk.id} value={kk.id}>{kk.nama_kk}</option>
+                        <option key={kk.id} value={kk.id}>{kk.nama_kk} {kk.nama_pasangan ? `(& ${kk.nama_pasangan})` : ''}</option>
                       ))}
                     </select>
                   </div>
